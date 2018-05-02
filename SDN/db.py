@@ -1,122 +1,127 @@
 #!/usr/bin/python3
 import pymysql
-db=None
+class DataBase():
+    def __init__(self):
+        self.db = pymysql.connect("45.78.37.244","root","fengwj33","GreenBar" )
+    def __del__(self):
+        self.db.close()
+    def addUser(self,userName,Password,UserType):
+        sql = "INSERT INTO accounts(UserName,Password,UserType) VALUES ('%s', '%s', %d);" % (userName,Password,UserType)
+        self.UPDATE(sql)
 
+    def getUser(self,userName):
+        sql="SELECT UserName,Password,UserType FROM GreenBar.accounts WHERE UserName='%s';" % userName
+        data=self.SELECT(sql)
+        return data
 
-def addUser(userName,Password,UserType):
-    sql = "INSERT INTO accounts(UserName,Password,UserType) VALUES ('%s', '%s', %d);" % (userName,Password,UserType)
-    UPDATE(sql)
+    def validateUser(self,userName,Password):
+        sql="SELECT Password,UserType FROM GreenBar.accounts WHERE UserName='%s';" % userName
+        data=self.SELECT(sql)
+        if len(data)==0:
+            return "-1"
+        pwd=data[0][0]
+        utype=data[0][1]
+        if pwd!=Password:
+            return "-1"
+        return utype
 
-def getUser(userName):
-    sql="SELECT UserName,Password,UserType FROM GreenBar.accounts WHERE UserName='%s';" % userName
-    data=SELECT(sql)
-    return data
+    def getUserMacList(self):
+        sql="SELECT UserName,Mac FROM GreenBar.Student;"
+        data=self.SELECT(sql)
+        return data
+    def setUserMac(self,userName,Mac):
+        sql="UPDATE GreenBar.Student SET Mac = '%s' WHERE UserName= '%s';" % (Mac,userName)
+        self.UPDATE(sql)
+    def addStudent(self,userName,Password,StuName):
+        self.addUser(userName,Password,1)
+        sql = "INSERT INTO Student(Stu_Name,UserName,Mac) VALUES ('%s', '%s','NULL');" % (StuName,userName)
+        self.UPDATE(sql)
 
-def addStudent(userName,Password,StuName):
-    addUser(userName,Password,2)
-    sql = "INSERT INTO Student(Stu_Name,UserName) VALUES ('%s', '%s');" % (StuName,userName)
-    UPDATE(sql)
+    def addParent(self,userName,Password,ParentName,Email):
+        self.addUser(userName,Password,3)
+        sql = "INSERT INTO Parent(ParentName,UserName,EmailAddr) VALUES ('%s', '%s','%s');" % (ParentName,userName,Email)
+        self.UPDATE(sql)
 
-def addParent(userName,Password,ParentName,Email):
-    addUser(userName,Password,3)
-    sql = "INSERT INTO Parent(ParentName,UserName,EmailAddr) VALUES ('%s', '%s','%s');" % (ParentName,userName,Email)
-    UPDATE(sql)
+    def addTeacher(self,userName,Password,TeacherName,Email):
+        self.addUser(userName,Password,2)
+        sql = "INSERT INTO Teacher(TeacherName,UserName,EmailAddr) VALUES ('%s', '%s','%s');" % (TeacherName,userName,Email)
+        self.UPDATE(sql)
 
-def addTeacher(userName,Password,TeacherName,Email):
-    addUser(userName,Password,3)
-    sql = "INSERT INTO Teacher(TeacherName,UserName,EmailAddr) VALUES ('%s', '%s','%s');" % (TeacherName,userName,Email)
-    UPDATE(sql)
+    def getStudent(self,StuName):
+        sql="SELECT UserName FROM GreenBar.Student WHERE Stu_Name='%s';" % StuName
+        data=self.SELECT(sql)
+        if len(data)==0:
+            return None
+        else:
+            return data[0][0]
+    def getStudentName(self,UserName):
+        sql="SELECT Stu_Name FROM GreenBar.Student WHERE UserName='%s';" % UserName
+        data=self.SELECT(sql)
+        if len(data)==0:
+            return None
+        else:
+            return data[0][0]
+    def getParent(self,ParentName):
+        sql="SELECT UserName FROM GreenBar.Parent WHERE ParentName='%s';" % ParentName
+        data=self.SELECT(sql)
+        if len(data)==0:
+            return None
+        else:
+            return data[0][0]
+    def getTeacher(self,TeacherName):
+        sql="SELECT UserName FROM GreenBar.Teacher WHERE TeacherName='%s';" % TeacherName
+        data=self.SELECT(sql)
+        if len(data)==0:
+            return None
+        else:
+            return data[0][0]
+    def setTeacher(self,uName_Stu,uName_Tea):
+        sql="UPDATE GreenBar.Student SET TeacherUName='%s'  WHERE UserName='%s';" % (uName_Tea,uName_Stu)
+        self.UPDATE(sql)
 
-def getStudent(StuName):
-    sql="SELECT UserName FROM GreenBar.Student WHERE Stu_Name='%s';" % StuName
-    data=SELECT(sql)
-    if len(data)==0:
-        return None
-    else:
-        return data[0][0]
-def getStudentName(UserName):
-    sql="SELECT Stu_Name FROM GreenBar.Student WHERE UserName='%s';" % UserName
-    data=SELECT(sql)
-    if len(data)==0:
-        return None
-    else:
-        return data[0][0]
-def getParent(ParentName):
-    sql="SELECT UserName FROM GreenBar.Parent WHERE ParentName='%s';" % ParentName
-    data=SELECT(sql)
-    if len(data)==0:
-        return None
-    else:
-        return data[0][0]
-def getTeacher(TeacherName):
-    sql="SELECT UserName FROM GreenBar.Teacher WHERE TeacherName='%s';" % TeacherName
-    data=SELECT(sql)
-    if len(data)==0:
-        return None
-    else:
-        return data[0][0]
-def setTeacher(uName_Stu,uName_Tea):
-    sql="UPDATE GreenBar.Student SET TeacherUName='%s'  WHERE UserName='%s';" % (uName_Tea,uName_Stu)
-    UPDATE(sql)
+    def setParent(self,uName_Stu,uName_Par): 
+        sql="UPDATE GreenBar.Student SET ParentUName='%s'  WHERE UserName='%s';" % (uName_Par,uName_Stu)
+        self.UPDATE(sql)
+        sql="UPDATE GreenBar.Parent SET StudentUName='%s'  WHERE UserName='%s';" % (uName_Stu,uName_Par)
+        self.UPDATE(sql)
+    def getGameServer(self):
+        sql="SELECT ServerName,IPAddr FROM GreenBar.GameServer;"
+        data=self.SELECT(sql)
+        return data
+    def setGameServer(self,list):
+        sql="truncate table GreenBar.GameServer;"
+        self.UPDATE(sql)
+        for gs in list:
+            sql = "INSERT INTO GreenBar.GameServer(ServerName,IPAddr) VALUES ('%s', '%s');" % (gs[0],gs[1])
+            self.UPDATE(sql)
+        
+    def getBlockList(self):
+        sql="SELECT BlockName,IPAddr FROM GreenBar.Block;"
+        data=self.SELECT(sql)
+        return data
+    def setBlockList(self,list):
+        sql="truncate table GreenBar.Block;"
+        self.UPDATE(sql)
+        for gs in list:
+            sql = "INSERT INTO GreenBar.Block(BlockName,IPAddr) VALUES ('%s', '%s');" % (gs[0],gs[1])
+            self.UPDATE(sql)
 
-def setParent(uName_Stu,uName_Par): 
-    sql="UPDATE GreenBar.Student SET ParentUName='%s'  WHERE UserName='%s';" % (uName_Par,uName_Stu)
-    UPDATE(sql)
-    sql="UPDATE GreenBar.Parent SET StudentUName='%s'  WHERE UserName='%s';" % (uName_Stu,uName_Par)
-    UPDATE(sql)
-def getGameServer():
-    sql="SELECT ServerName,IPAddr FROM GreenBar.GameServer;"
-    data=SELECT(sql)
-    return data
-def setGameServer(list):
-    sql="truncate table GreenBar.GameServer;"
-    UPDATE(sql)
-    for gs in list:
-        sql = "INSERT INTO GreenBar.GameServer(ServerName,IPAddr) VALUES ('%s', '%s');" % (gs[0],gs[1])
-        UPDATE(sql)
-    
-def getBlockList():
-    sql="SELECT BlockName,IPAddr FROM GreenBar.Block;"
-    data=SELECT(sql)
-    return data
-def setBlockList(list):
-    sql="truncate table GreenBar.Block;"
-    UPDATE(sql)
-    for gs in list:
-        sql = "INSERT INTO GreenBar.Block(BlockName,IPAddr) VALUES ('%s', '%s');" % (gs[0],gs[1])
-        UPDATE(sql)
-
-def insertLog(StuName,timeID,time,Byte):
-    sql = "INSERT INTO GreenBar.OnlineLog(StudentID) VALUES ('%s', '%s');" % (gs[0],gs[1])
-def opendb():
-    global db
-    db = pymysql.connect("45.78.37.244","root","fengwj33","GreenBar" )
-def closedb():
-    global db
-    db.close()
-def SELECT(query):
-    global db
-    cursor = db.cursor()
-    cursor.execute(query)
-    data = cursor.fetchall()
-    return data
-def UPDATE(query):
-    global db
-    cursor = db.cursor()
-    try:
+    '''def insertLog(StuName,timeID,time,Byte):
+        sql = "INSERT INTO GreenBar.OnlineLog(StudentUName,Time,TimeID,Byte) VALUES ('%s', '%s', %d,%d);" % (gs[0],gs[1])'''
+    def getLog(self,StuName):
+        sql="SELECT TimeID,Time,Byte FROM GreenBar.OnlineLog WHERE StudentUName='%s';" % StuName
+        data=self.SELECT(sql)
+        return data
+    def SELECT(self,query):
+        cursor = self.db.cursor()
         cursor.execute(query)
-        db.commit()
-    except:
-        db.rollback()
+        data = cursor.fetchall()
+        return data
+    def UPDATE(self,query):
+        cursor = self.db.cursor()
+        try:
+            cursor.execute(query)
+            self.db.commit()
+        except:
+            self.db.rollback()
 
-
-opendb()
-data=getUser("Admin")
- 
-print (data)
-#addStudent("S1","123","alice")
-#addParent("P1","123","jack","123@ww.com")
-setParent("alice","jack")
- 
-print (data)
-closedb()

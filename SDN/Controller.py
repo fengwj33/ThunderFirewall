@@ -173,13 +173,13 @@ class MSwitch(app_manager.RyuApp):
         self.userList={}
         self.WAN=1
         self.cookie=0
-        self.checkTable=set(["10.0.0.10","10.0.0.11","10.0.0.12"])# 检查的目标ip地址
+        self.checkTable=set()#set(["10.0.0.10","10.0.0.11","10.0.0.12"])# 检查的目标ip地址
 
         
         self.flows={}
         #self.monitors={}
         threading.Thread(target=MSwitch.socketlistener,args=(self,)).start()
-    
+        threading.Thread(target=MSwitch.connectController,args=(self,)).start()
 
     def addUser(self,userName,userMac):
         self.userList[userName]=UserController(self,userName,userMac)
@@ -192,9 +192,10 @@ class MSwitch(app_manager.RyuApp):
             uc=self.userList[user]
             uc.updateFlowsList()
 
-
-
-
+    def updateUserMac(self,username,Mac):
+        userlist[username].userMac=Mac
+        userlist[username].updateFlowsList()
+            
 
 
 
@@ -225,28 +226,60 @@ class MSwitch(app_manager.RyuApp):
             cmd=rcv(csocket)
             if len(cmd)==0:
                 return
-            scmd=cmd.split(' ')
-            if scmd[0]=="addUser":
-                self.addUser(scmd[1],scmd[2])
-                retval="addUser:"+scmd[1]+"\nMacAddress:"+scmd[2]
-            elif scmd[0]=="updateCheckTable":
-                self.updateCheckTable(scmd[1:])
-                retval="update Success"
-            elif scmd[0]=="getflow":
-                byte=str(self.userList[scmd[1]].getFlow())
-                retval=scmd[1]+":"+byte
-            elif scmd[0]=="lock":
-                self.userList[scmd[1]].lockAll()
-                retval=scmd[1]+":"+"locked"
-            elif scmd[0]=="unlock":
-                self.userList[scmd[1]].unlockAll()
-                retval=scmd[1]+":"+"unlocked"
-            else:
-                retval="command="+cmd
+            retval=self.exeCmd(cmd)
             send(csocket,retval)
 
+    def connectController(self):
+        while True:
+            s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+            s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            host="0.0.0.0"
+            port=2346
+            while True:
+                try:
+                    s.connect((host,port))
+                    break
+                except :
+                    print("ConnectionRefused")
+                    time.sleep(1)
+            print("success")
+            while True:
+                cmd=rcv(s)
+                if len(cmd)==0:
+                    break
+                retval=self.exeCmd(cmd)
+                send(s,retval)
+            print("ConnectionClosed")
+            s.close()
 
-            
+        
+        
+
+    def exeCmd(self,cmd):
+        retval=""
+        scmd=cmd.split(' ')
+        if scmd[0]=="addUser":
+            self.addUser(scmd[1],scmd[2])
+            retval="addUser:"+scmd[1]+"\nMacAddress:"+scmd[2]
+        elif scmd[0]=="updateUser":
+            self.updateUserMac(scmd[1],scmd[2])
+            retval="updateUser:"+scmd[1]+"\nMacAddress:"+scmd[2]
+        elif scmd[0]=="updateCheckTable":
+            self.updateCheckTable(scmd[1:])
+            retval="update Success"
+        elif scmd[0]=="getflow":
+            byte=str(self.userList[scmd[1]].getFlow())
+            retval=scmd[1]+":"+byte
+        elif scmd[0]=="lock":
+            self.userList[scmd[1]].lockAll()
+            retval=scmd[1]+":"+"locked"
+        elif scmd[0]=="unlock":
+            self.userList[scmd[1]].unlockAll()
+            retval=scmd[1]+":"+"unlocked"
+        else:
+            retval="command="+cmd
+        
+        return retval
 
     def socketlistener(self):
         s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)

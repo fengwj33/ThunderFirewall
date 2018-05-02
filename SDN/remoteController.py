@@ -32,7 +32,7 @@ def rscr(csocket):
 
 s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-host="10.210.193.168"
+host="0.0.0.0"
 port=2345
 s.connect((host,port))
 print(">>",end="")
