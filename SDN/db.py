@@ -23,7 +23,7 @@ class DataBase():
         utype=data[0][1]
         if pwd!=Password:
             return "-1"
-        return utype
+        return str(utype)
 
     def getUserMacList(self):
         sql="SELECT UserName,Mac FROM GreenBar.Student;"

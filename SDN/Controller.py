@@ -160,6 +160,31 @@ class FlowController():
 
     def getFlowCount(self):
         return self.FlowCounter
+
+class p2Flow():
+    def __init__(self,app,dp,mac,inport,ipaddr):
+        self.app=app
+        self.mac=mac
+        self.ipaddr=ipaddr
+        self.datapath=dp
+        self.inport=inport
+        self.cookie=app.getcookie()
+        datapath=self.datapath
+        ofproto = datapath.ofproto
+        parser = datapath.ofproto_parser
+        match = parser.OFPMatch(eth_type=0x800,eth_src=self.mac,ipv4_dst=self.ipaddr)
+        actions = []
+        self.app.add_flow(datapath, 2, match, actions,self.cookie)
+        match = parser.OFPMatch(eth_type=0x800,eth_dst=self.mac,ipv4_src=self.ipaddr)
+        self.app.add_flow(datapath, 2, match, actions,self.cookie)
+        app.regP2Flow(self,self.ipaddr)
+    def remove(self):
+        self.app.delete_flow(self.datapath,self.cookie)
+
+
+
+
+
 class MSwitch(app_manager.RyuApp):
 
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
@@ -173,6 +198,9 @@ class MSwitch(app_manager.RyuApp):
         self.userList={}
         self.WAN=1
         self.cookie=0
+
+        self.p2Flows=[]
+
         self.checkTable=set()#set(["10.0.0.10","10.0.0.11","10.0.0.12"])# 检查的目标ip地址
 
         
@@ -193,8 +221,24 @@ class MSwitch(app_manager.RyuApp):
             uc.updateFlowsList()
 
     def updateUserMac(self,username,Mac):
-        userlist[username].userMac=Mac
-        userlist[username].updateFlowsList()
+        u=self.userList[username]
+        log("update:"+Mac)
+        if u.inited:
+            for ip in self.checkTable:
+                p2Flow(self,u.datapath,u.userMac,u.userPort,ip)
+        self.userList[username].userMac=Mac
+        self.userList[username].removeFlowsList()
+        self.userList[username].inited=False
+        for i in range(len(self.p2Flows)-1,-1,-1):
+            flow=self.p2Flows[i]
+            if flow[1].mac==Mac:
+                flow[1].remove()
+                log("p2Flow:"+str(flow[1].cookie)+"=>"+flow[1].mac+"-"+flow[1].ipaddr+"\t\tremoved")
+                self.p2Flows.remove(flow)
+                
+            
+            
+
             
 
 
@@ -307,7 +351,9 @@ class MSwitch(app_manager.RyuApp):
     def unregFlows(self,flow,cookie):
         log("FlowController:"+str(flow.cookie)+"=>"+flow.userMac+"-"+flow.dstIP+"\t\tunregisted")
         pass
-
+    def regP2Flow(self,flow,ipaddr):
+        self.p2Flows.append([ipaddr,flow])
+        log("p2Flow:"+str(flow.cookie)+"=>"+flow.mac+"-"+ipaddr+"\t\tregisted")
 
 
 
@@ -348,7 +394,27 @@ class MSwitch(app_manager.RyuApp):
                                          0, 0, 0, UINT32_MAX, ofp.OFPP_ANY,
                                          ofp.OFPG_ANY, 0, match, inst)
         datapath.send_msg(flow_mod)
+    def delete_flow_Port(self, datapath,port):
+        ofp = datapath.ofproto
+        ofp_parser = datapath.ofproto_parser
 
+        cookie = cookie_mask = 0
+        table_id = 0
+        idle_timeout = 15
+        hard_timeout = 60
+        priority = 1
+        buffer_id = ofp.OFP_NO_BUFFER
+        match = ofp_parser.OFPMatch(in_port=port)
+        actions = []
+        inst = []
+        req = ofp_parser.OFPFlowMod(datapath, cookie, cookie_mask,
+                                    table_id, ofp.OFPFC_DELETE,
+                                    idle_timeout, hard_timeout,
+                                    priority, buffer_id,
+                                    2, ofp.OFPG_ANY,
+                                    ofp.OFPFF_SEND_FLOW_REM,
+                                    match, inst)
+        datapath.send_msg(req)
     @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER)
     def switch_features_handler(self, ev):
         datapath = ev.msg.datapath

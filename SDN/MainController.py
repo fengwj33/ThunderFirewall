@@ -83,11 +83,15 @@ class MainController():
 
     
     def alteruserMac(self,username,mac):
+        '''
         for u in self.userList:
             if u[0]==username:
                 if u[1]!=mac:
                     u[1]=mac    
+                    '''
+        
         self.db.setUserMac(username,mac)
+        self.userList=self.db.getUserMacList()
         for ctl in self.sdnctrls:
             ctl.updateUser(username,mac)
 
@@ -139,5 +143,5 @@ class MainController():
     def run(self):
         threading.Thread(target=MainController.connectCtrl,args=(self,)).start()
 
-controller=MainController()
-controller.run()
+#controller=MainController()
+#controller.run()
