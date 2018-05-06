@@ -43,6 +43,7 @@ class DataBase():
         sql = "INSERT INTO Student(Stu_Name,UserName,Mac) VALUES ('%s', '%s','NULL');" % (StuName,userName)
         self.UPDATE(sql)
 
+
     def addParent(self,userName,Password,ParentName,Email):
         self.addUser(userName,Password,3)
         sql = "INSERT INTO Parent(ParentName,UserName,EmailAddr) VALUES ('%s', '%s','%s');" % (ParentName,userName,Email)
@@ -57,6 +58,8 @@ class DataBase():
         self.removeUser(userName)
         sql = "DELETE FROM GreenBar.Teacher WHERE UserName='%s';" % userName
         self.UPDATE(sql)
+
+
 
     def getStudent(self,StuName):
         sql="SELECT UserName FROM GreenBar.Student WHERE Stu_Name='%s';" % StuName
