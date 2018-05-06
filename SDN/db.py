@@ -1,14 +1,20 @@
 #!/usr/bin/python3
 import pymysql
+from ConnPool import CPool
 class DataBase():
     def __init__(self):
-        self.db = pymysql.connect("45.78.37.244","root","fengwj33","GreenBar" )
+
+        pass
+        #self.db = pymysql.connect("45.78.37.244","root","fengwj33","GreenBar" )
     def __del__(self):
-        self.db.close()
+        pass
+        #self.db.close()
     def addUser(self,userName,Password,UserType):
         sql = "INSERT INTO accounts(UserName,Password,UserType) VALUES ('%s', '%s', %d);" % (userName,Password,UserType)
         self.UPDATE(sql)
-
+    def removeUser(self,userName):
+        sql = "DELETE FROM GreenBar.accounts WHERE UserName='%s';" % userName
+        self.UPDATE(sql)
     def getUser(self,userName):
         sql="SELECT UserName,Password,UserType FROM GreenBar.accounts WHERE UserName='%s';" % userName
         data=self.SELECT(sql)
@@ -45,6 +51,11 @@ class DataBase():
     def addTeacher(self,userName,Password,TeacherName,Email):
         self.addUser(userName,Password,2)
         sql = "INSERT INTO Teacher(TeacherName,UserName,EmailAddr) VALUES ('%s', '%s','%s');" % (TeacherName,userName,Email)
+        print(sql)
+        self.UPDATE(sql)
+    def removeTeacher(self,userName):
+        self.removeUser(userName)
+        sql = "DELETE FROM GreenBar.Teacher WHERE UserName='%s';" % userName
         self.UPDATE(sql)
 
     def getStudent(self,StuName):
@@ -75,6 +86,10 @@ class DataBase():
             return None
         else:
             return data[0][0]
+    def getTeacherList(self):
+        sql="SELECT TeacherID,UserName,TeacherName,EmailAddr FROM GreenBar.Teacher"
+        data=self.SELECT(sql)
+        return data
     def setTeacher(self,uName_Stu,uName_Tea):
         sql="UPDATE GreenBar.Student SET TeacherUName='%s'  WHERE UserName='%s';" % (uName_Tea,uName_Stu)
         self.UPDATE(sql)
@@ -113,15 +128,21 @@ class DataBase():
         data=self.SELECT(sql)
         return data
     def SELECT(self,query):
-        cursor = self.db.cursor()
+        db = CPool.getConn()
+        cursor = db.cursor()
         cursor.execute(query)
         data = cursor.fetchall()
+        cursor.close()
+        CPool.returnCon(db)
         return data
     def UPDATE(self,query):
-        cursor = self.db.cursor()
+        db = CPool.getConn()
+        cursor = db.cursor()
         try:
             cursor.execute(query)
-            self.db.commit()
+            db.commit()
         except:
-            self.db.rollback()
+            db.rollback()
+        cursor.close()
+        CPool.returnCon(db)
 

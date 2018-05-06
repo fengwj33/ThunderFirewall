@@ -81,7 +81,8 @@ class MainController():
     def unregctrl(self,ctl):
         self.sdnctrls.remove(ctl)
 
-    
+    def getDB(self):
+        return self.db
     def alteruserMac(self,username,mac):
         '''
         for u in self.userList:
