@@ -8,11 +8,12 @@ import MainController
 web.config.debug = False
 controller=MainController.MainController()
 controller.run()
-session = web.session.Session(app, web.session.DiskStore('sessions'), initializer={'login': False,'UserName':"",'userType':-1})
+
 urls = (
     "/","login",
     "/login", "login",
     "/regMac", "regMac",
+    "/index","index",
     "/ADTeacher","ADTeacher",
 
 
@@ -22,18 +23,32 @@ urls = (
 )
 app= web.application(urls,globals())
 render = web.template.render('templates/')
+session = web.session.Session(app, web.session.DiskStore('sessions'), initializer={'login': False,'UserName':"",'userType':-1})
 class login:
     def GET(self):
-        return ""
+        return render.login("none")
     def POST(self):
-        return ""
+        username=web.input()["userName"]
+        password=web.input()["password"]
+        db=controller.getDB()
+        utype=db.validateUser(username,password)
+        if utype=="-1":
+            return render.login("block")
+        session.login=True
+        session.UserName=username
+        session.userType=utype
+        raise web.seeother('/index')
+class index:
+    def GET(self):
+        return render.index("Admin")
 class regMac:
     def GET(self):
         if web.input().__len__()!=0:
             username=web.input()["userName"]
             password=web.input()["password"]
             Mac=web.input()["mac"]
-            utype=controller.db.validateUser(username,password)
+            db=controller.getDB()
+            utype=db.validateUser(username,password)
             if utype=="-1":
                 return "Error"
             if utype=="1":

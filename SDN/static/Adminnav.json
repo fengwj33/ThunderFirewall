@@ -12,26 +12,6 @@
                     "title":"编辑班主任信息",
                     "url":"/static/StuInfo_sd.html",
                     "count":"0"
-                },
-                {
-                    "title":"添加学生",
-                    "url":"/static/StuInfo_sd.html",
-                    "count":"0"
-                },
-                {
-                    "title":"编辑学生信息",
-                    "url":"/static/StuInfo_sd.html",
-                    "count":"0"
-                },
-                {
-                    "title":"添加家长",
-                    "url":"/static/StuInfo_sd.html",
-                    "count":"0"
-                },
-                {
-                    "title":"编辑家长信息",
-                    "url":"/static/StuInfo_sd.html",
-                    "count":"0"
                 }
 
             ],
@@ -47,23 +27,6 @@
                 },
                 {
                     "title":"编辑联网规则",
-                    "url":"/static/StuInfo_pl.html",
-                    "count":"0"
-                }
-
-            ],
-            "count":"0"
-        },
-        {
-            "title":"学生管理监控",
-            "content":[
-                {
-                    "title":"查看学生联网状态",
-                    "url":"/static/StuInfo_pl.html",
-                    "count":"0"
-                },
-                {
-                    "title":"查看流量折线图",
                     "url":"/static/StuInfo_pl.html",
                     "count":"0"
                 }
