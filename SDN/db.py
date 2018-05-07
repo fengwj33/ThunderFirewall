@@ -52,13 +52,14 @@ class DataBase():
     def addTeacher(self,userName,Password,TeacherName,Email):
         self.addUser(userName,Password,2)
         sql = "INSERT INTO Teacher(TeacherName,UserName,EmailAddr) VALUES ('%s', '%s','%s');" % (TeacherName,userName,Email)
-        print(sql)
         self.UPDATE(sql)
     def removeTeacher(self,userName):
         self.removeUser(userName)
         sql = "DELETE FROM GreenBar.Teacher WHERE UserName='%s';" % userName
         self.UPDATE(sql)
-
+    def editTeacher(self,userName,TeacherName,Email):
+        sql="UPDATE GreenBar.Teacher SET TeacherName='%s',EmailAddr='%s' WHERE UserName='%s';" % (TeacherName,Email,userName)
+        self.UPDATE(sql)
 
 
     def getStudent(self,StuName):

@@ -15,11 +15,12 @@ urls = (
     "/regMac", "regMac",
     "/index","index",
     "/ADTeacher","ADTeacher",
-
+    "/ETeacher","ETeacher",
 
     "/GetTeacherList","GetTeacherList",
     "/AddTeacher","AddTeacher",
-    "/removeTeacher","removeTeacher"
+    "/removeTeacher","removeTeacher",
+    "/editTeacher","editTeacher"
 )
 app= web.application(urls,globals())
 render = web.template.render('templates/')
@@ -40,7 +41,17 @@ class login:
         raise web.seeother('/index')
 class index:
     def GET(self):
-        return render.index("Admin")
+        if session.login==False:
+            raise web.seeother('/')
+        if session.userType=='0':
+            return render.index("Admin")
+        elif session.userType=='1':
+            return render.index("Student")
+        elif session.userType=='2':
+            return render.index("Teacher")
+        elif session.userType=='3':
+            return render.index("Parent")
+        return session.userType
 class regMac:
     def GET(self):
         if web.input().__len__()!=0:
@@ -59,6 +70,11 @@ class regMac:
 class ADTeacher:
     def GET(self):
         return render.AddTeacher()
+    def POST(self):
+        return ""
+class ETeacher:
+    def GET(self):
+        return render.ETeacher()
     def POST(self):
         return ""
 class GetTeacherList:
@@ -90,6 +106,14 @@ class removeTeacher:
         UserName=web.input()["UserName"]
         db=controller.getDB()
         db.removeTeacher(UserName)
+        return "success"
+class editTeacher:
+    def POST(self):
+        UserName=web.input()["UserName"]
+        TeacherName=web.input()["TeacherName"]
+        Email=web.input()["Email"]
+        db=controller.getDB()
+        db.editTeacher(UserName,TeacherName,Email)
         return "success"
 if __name__== "__main__":
     app.run()

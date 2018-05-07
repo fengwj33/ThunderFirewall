@@ -4,16 +4,6 @@
             "title":"用户管理",
             "content":[
                 {
-                    "title":"增删班主任",
-                    "url":"/ADTeacher",
-                    "count":"0"
-                },
-                {
-                    "title":"编辑班主任信息",
-                    "url":"/static/StuInfo_sd.html",
-                    "count":"0"
-                },
-                {
                     "title":"添加学生",
                     "url":"/static/StuInfo_sd.html",
                     "count":"0"
@@ -31,23 +21,6 @@
                 {
                     "title":"编辑家长信息",
                     "url":"/static/StuInfo_sd.html",
-                    "count":"0"
-                }
-
-            ],
-            "count":"0"
-        },
-        {
-            "title":"网络交换机管理",
-            "content":[
-                {
-                    "title":"查看交换机状态",
-                    "url":"/static/StuInfo_pl.html",
-                    "count":"0"
-                },
-                {
-                    "title":"编辑联网规则",
-                    "url":"/static/StuInfo_pl.html",
                     "count":"0"
                 }
 
