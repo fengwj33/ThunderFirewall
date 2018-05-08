@@ -5,7 +5,7 @@
             "content":[
                 {
                     "title":"添加学生",
-                    "url":"/static/StuInfo_sd.html",
+                    "url":"/static/AddStudent.html",
                     "count":"0"
                 },
                 {

@@ -38,11 +38,16 @@ class DataBase():
     def setUserMac(self,userName,Mac):
         sql="UPDATE GreenBar.Student SET Mac = '%s' WHERE UserName= '%s';" % (Mac,userName)
         self.UPDATE(sql)
-    def addStudent(self,userName,Password,StuName):
-        self.addUser(userName,Password,1)
-        sql = "INSERT INTO Student(Stu_Name,UserName,Mac) VALUES ('%s', '%s','NULL');" % (StuName,userName)
-        self.UPDATE(sql)
 
+    def addStudent(self,userName,Password,StuName,TeacherUName):
+        self.addUser(userName,Password,1)
+        sql = "INSERT INTO Student(Stu_Name,UserName,Mac,TeacherUName) VALUES ('%s', '%s','NULL','%s');" % (StuName,userName,TeacherUName)
+        self.UPDATE(sql)
+    def getStudentList(self,TeacherUName):
+        sql="SELECT StudentID,UserName,Stu_Name,Mac FROM GreenBar.Student WHERE TeacherUName='%s'" % (TeacherUName)
+
+        data=self.SELECT(sql)
+        return data
 
     def addParent(self,userName,Password,ParentName,Email):
         self.addUser(userName,Password,3)

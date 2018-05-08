@@ -17,10 +17,13 @@ urls = (
     "/ADTeacher","ADTeacher",
     "/ETeacher","ETeacher",
 
+
     "/GetTeacherList","GetTeacherList",
     "/AddTeacher","AddTeacher",
     "/removeTeacher","removeTeacher",
     "/editTeacher","editTeacher"
+    "/GetStudentList","GetStudentList",
+    "/AddStudent","AddStudent"
 )
 app= web.application(urls,globals())
 render = web.template.render('templates/')
@@ -100,6 +103,29 @@ class AddTeacher:
         Password=web.input()["Password"]
         db=controller.getDB()
         db.addTeacher(UserName,Password,TeacherName,Email)
+        return "success"
+class GetStudentList:
+    def GET(self):
+        db=controller.getDB()
+        data=db.getStudentList(session.UserName)
+        retval={}
+        list=[]
+        for r in data:
+            temp=[]
+            for c in r:
+                temp.append(c)
+            list.append(temp)
+        retval["body"]=list
+        retjson=json.dumps(retval)
+        return retjson
+class AddStudent:
+    def POST(self):
+        UserName=web.input()["UserName"]
+        StudentName=web.input()["StudentName"]
+        Password=web.input()["Password"]
+        Teacher=session.UserName
+        db=controller.getDB()
+        db.addStudent(UserName,Password,StudentName,Teacher)
         return "success"
 class removeTeacher:
     def POST(self):
