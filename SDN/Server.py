@@ -16,6 +16,7 @@ urls = (
     "/index","index",
     "/ADTeacher","ADTeacher",
     "/ETeacher","ETeacher",
+    "/ADStudent","ADStudent",
 
 
     "/GetTeacherList","GetTeacherList",
@@ -23,6 +24,7 @@ urls = (
     "/removeTeacher","removeTeacher",
     "/editTeacher","editTeacher",
     "/GetStudentList","GetStudentList",
+    "/GetStudentListWP","GetStudentListWP",
     "/AddStudent","AddStudent",
     "/removeStudent","removeStudent"
 )
@@ -76,6 +78,11 @@ class ADTeacher:
         return render.AddTeacher()
     def POST(self):
         return ""
+class ADStudent:
+    def GET(self):
+        return render.AddStudent()
+    def POST(self):
+        return ""
 class ETeacher:
     def GET(self):
         return render.ETeacher()
@@ -120,6 +127,21 @@ class GetStudentList:
         retval["body"]=list
         retjson=json.dumps(retval)
         return retjson
+class GetStudentListWP:
+    def GET(self):
+        db=controller.getDB()
+        print(session.UserName)
+        data=db.getStudentListWithParent(session.UserName)
+        retval={}
+        list=[]
+        for r in data:
+            temp=[]
+            for c in r:
+                temp.append(c)
+            list.append(temp)
+        retval["body"]=list
+        retjson=json.dumps(retval)
+        return retjson
 class AddStudent:
     def POST(self):
         UserName=web.input()["UserName"]
@@ -131,8 +153,7 @@ class AddStudent:
 class removeStudent:
     def POST(self):
         UserName=web.input()["UserName"]
-        db=controller.getDB()
-        db.removeStudent(UserName)
+        controller.removeStudent(UserName)
         return "success"
 class removeTeacher:
     def POST(self):

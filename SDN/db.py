@@ -41,11 +41,14 @@ class DataBase():
 
     def addStudent(self,userName,Password,StuName,TeacherUName):
         self.addUser(userName,Password,1)
-        sql = "INSERT INTO Student(Stu_Name,UserName,Mac,TeacherUName) VALUES ('%s', '%s','NULL','%s');" % (StuName,userName,TeacherUName)
+        sql = "INSERT INTO Student(Stu_Name,UserName,Mac,TeacherUName,ParentUName) VALUES ('%s', '%s','NULL','%s','NONE');" % (StuName,userName,TeacherUName)
         self.UPDATE(sql)
     def getStudentList(self,TeacherUName):
         sql="SELECT StudentID,UserName,Stu_Name,Mac FROM GreenBar.Student WHERE TeacherUName='%s'" % (TeacherUName)
-
+        data=self.SELECT(sql)
+        return data
+    def getStudentListWithParent(self,TeacherUName):
+        sql="SELECT StudentID,Student.UserName,Stu_Name,ParentUName,ParentName From Student left join Parent on Student.ParentUName=Parent.UserName WHERE TeacherUName='%s'" % (TeacherUName)
         data=self.SELECT(sql)
         return data
     def removeStudent(self,userName):
@@ -102,6 +105,7 @@ class DataBase():
         sql="SELECT TeacherID,UserName,TeacherName,EmailAddr FROM GreenBar.Teacher"
         data=self.SELECT(sql)
         return data
+    
     def setTeacher(self,uName_Stu,uName_Tea):
         sql="UPDATE GreenBar.Student SET TeacherUName='%s'  WHERE UserName='%s';" % (uName_Tea,uName_Stu)
         self.UPDATE(sql)

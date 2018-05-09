@@ -61,6 +61,9 @@ class SDNCtrl():
         for user in userlist:
             cmd="addUser "+user[0]+" "+user[1]
             send(self.csocket,cmd.encode("utf-8"))
+    def removeUser(self,userName):
+        cmd="removeUser "+userName
+        send(self.csocket,cmd.encode("utf-8"))
     def updateUser(self,username,mac):
         cmd="updateUser "+username+" "+mac
         send(self.csocket,cmd.encode("utf-8"))
@@ -102,9 +105,12 @@ class MainController():
         self.db.addStudent(userName,Password,StuName,Teacher)
         self.userList=self.db.getUserMacList()
         for ctl in self.sdnctrls:
-            ctl.addUser(username,'NULL')
+            ctl.addUser(userName,'NULL')
     
-
+    def removeStudent(self,userName):
+        self.db.removeStudent(userName)
+        for ctl in self.sdnctrls:
+            ctl.removeUser(userName)
 
 
 

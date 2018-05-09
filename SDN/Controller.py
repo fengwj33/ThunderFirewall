@@ -211,6 +211,12 @@ class MSwitch(app_manager.RyuApp):
 
     def addUser(self,userName,userMac):
         self.userList[userName]=UserController(self,userName,userMac)
+        for i in range(len(self.p2Flows)-1,-1,-1):
+            flow=self.p2Flows[i]
+            if flow[1].mac==userMac:
+                flow[1].remove()
+                log("p2Flow:"+str(flow[1].cookie)+"=>"+flow[1].mac+"-"+flow[1].ipaddr+"\t\tremoved")
+                self.p2Flows.remove(flow)
 
     def updateCheckTable(self,iptable):
         self.checkTable=set()
@@ -236,7 +242,15 @@ class MSwitch(app_manager.RyuApp):
                 log("p2Flow:"+str(flow[1].cookie)+"=>"+flow[1].mac+"-"+flow[1].ipaddr+"\t\tremoved")
                 self.p2Flows.remove(flow)
                 
-            
+    def removeUser(self,username):
+        u=self.userList[username]
+        if u.inited:
+            for ip in self.checkTable:
+                p2Flow(self,u.datapath,u.userMac,u.userPort,ip)
+        self.userList[username].removeFlowsList()
+        self.userList.pop(username)
+
+
             
 
             
@@ -308,6 +322,9 @@ class MSwitch(app_manager.RyuApp):
         elif scmd[0]=="updateUser":
             self.updateUserMac(scmd[1],scmd[2])
             retval="updateUser:"+scmd[1]+"\nMacAddress:"+scmd[2]
+        elif scmd[0]=="removeUser":
+            self.removeUser(scmd[1])
+            retval="removeUser:"+scmd[1]
         elif scmd[0]=="updateCheckTable":
             self.updateCheckTable(scmd[1:])
             retval="update Success"
