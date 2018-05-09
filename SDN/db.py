@@ -48,7 +48,10 @@ class DataBase():
 
         data=self.SELECT(sql)
         return data
-
+    def removeStudent(self,userName):
+        self.removeUser(userName)
+        sql = "DELETE FROM GreenBar.Student WHERE UserName='%s';" % userName
+        self.UPDATE(sql)
     def addParent(self,userName,Password,ParentName,Email):
         self.addUser(userName,Password,3)
         sql = "INSERT INTO Parent(ParentName,UserName,EmailAddr) VALUES ('%s', '%s','%s');" % (ParentName,userName,Email)

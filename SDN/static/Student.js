@@ -49,17 +49,14 @@ function addstudent()
 }
 function dellist(id)
 {
-    alert(id);
-    return;
     $.ajax({
         type: "post",
-        url: "/removeTeacher",
+        url: "/removeStudent",
         data: {
             "UserName": id
         },
         dataType: 'text',
         success: function (data) {
-            alert("remove:"+id);
             getlist()
         },
         error: function () {

@@ -98,11 +98,11 @@ class MainController():
 
     
 
-    def addStudent(self,userName,Password,StuName):
-        self.db.addStudent(userName,Password,StuName)
-        self.userList.append([username,'NONE'])
+    def addStudent(self,userName,Password,StuName,Teacher):
+        self.db.addStudent(userName,Password,StuName,Teacher)
+        self.userList=self.db.getUserMacList()
         for ctl in self.sdnctrls:
-            ctl.updateUser(username,mac)
+            ctl.addUser(username,'NULL')
     
 
 

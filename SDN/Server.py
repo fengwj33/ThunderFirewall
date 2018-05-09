@@ -21,9 +21,10 @@ urls = (
     "/GetTeacherList","GetTeacherList",
     "/AddTeacher","AddTeacher",
     "/removeTeacher","removeTeacher",
-    "/editTeacher","editTeacher"
+    "/editTeacher","editTeacher",
     "/GetStudentList","GetStudentList",
-    "/AddStudent","AddStudent"
+    "/AddStudent","AddStudent",
+    "/removeStudent","removeStudent"
 )
 app= web.application(urls,globals())
 render = web.template.render('templates/')
@@ -107,6 +108,7 @@ class AddTeacher:
 class GetStudentList:
     def GET(self):
         db=controller.getDB()
+        print(session.UserName)
         data=db.getStudentList(session.UserName)
         retval={}
         list=[]
@@ -124,8 +126,13 @@ class AddStudent:
         StudentName=web.input()["StudentName"]
         Password=web.input()["Password"]
         Teacher=session.UserName
+        controller.addStudent(UserName,Password,StudentName,Teacher)
+        return "success"
+class removeStudent:
+    def POST(self):
+        UserName=web.input()["UserName"]
         db=controller.getDB()
-        db.addStudent(UserName,Password,StudentName,Teacher)
+        db.removeStudent(UserName)
         return "success"
 class removeTeacher:
     def POST(self):
