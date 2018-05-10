@@ -43,6 +43,9 @@ class DataBase():
         self.addUser(userName,Password,1)
         sql = "INSERT INTO Student(Stu_Name,UserName,Mac,TeacherUName,ParentUName) VALUES ('%s', '%s','NULL','%s','NONE');" % (StuName,userName,TeacherUName)
         self.UPDATE(sql)
+    def editStudent(self,userName,StudentName):
+        sql="UPDATE GreenBar.Student SET Stu_Name='%s' WHERE UserName='%s';" % (StudentName,userName)
+        self.UPDATE(sql)
     def getStudentList(self,TeacherUName):
         sql="SELECT StudentID,UserName,Stu_Name,Mac FROM GreenBar.Student WHERE TeacherUName='%s'" % (TeacherUName)
         data=self.SELECT(sql)
@@ -55,11 +58,22 @@ class DataBase():
         self.removeUser(userName)
         sql = "DELETE FROM GreenBar.Student WHERE UserName='%s';" % userName
         self.UPDATE(sql)
-    def addParent(self,userName,Password,ParentName,Email):
+    def addParent(self,userName,Password,ParentName,Email,Teacher):
         self.addUser(userName,Password,3)
-        sql = "INSERT INTO Parent(ParentName,UserName,EmailAddr) VALUES ('%s', '%s','%s');" % (ParentName,userName,Email)
+        sql = "INSERT INTO Parent(ParentName,UserName,EmailAddr,Teacher) VALUES ('%s', '%s','%s','%s');" % (ParentName,userName,Email,Teacher)
         self.UPDATE(sql)
 
+
+    def getStuParent(self,stuUserName):
+        sql="SELECT ParentUName FROM GreenBar.Student WHERE UserName='%s';" % (stuUserName)
+        print(sql)
+        data=self.SELECT(sql)
+        return data[0][0]
+
+    def removeParent(self,userName):
+        self.removeUser(userName)
+        sql = "DELETE FROM GreenBar.Parent WHERE UserName='%s';" % userName
+        self.UPDATE(sql)
     def addTeacher(self,userName,Password,TeacherName,Email):
         self.addUser(userName,Password,2)
         sql = "INSERT INTO Teacher(TeacherName,UserName,EmailAddr) VALUES ('%s', '%s','%s');" % (TeacherName,userName,Email)
@@ -80,6 +94,7 @@ class DataBase():
             return None
         else:
             return data[0][0]
+    
     def getStudentName(self,UserName):
         sql="SELECT Stu_Name FROM GreenBar.Student WHERE UserName='%s';" % UserName
         data=self.SELECT(sql)

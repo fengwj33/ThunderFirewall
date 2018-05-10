@@ -108,6 +108,10 @@ class MainController():
             ctl.addUser(userName,'NULL')
     
     def removeStudent(self,userName):
+        
+        pname=self.db.getStuParent(userName)
+        if pname != 'NONE':
+            self.db.removeParent(pname)
         self.db.removeStudent(userName)
         for ctl in self.sdnctrls:
             ctl.removeUser(userName)

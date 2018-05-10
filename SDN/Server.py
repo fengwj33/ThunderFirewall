@@ -10,6 +10,7 @@ controller=MainController.MainController()
 controller.run()
 
 urls = (
+    "/Debug","debug",
     "/","login",
     "/login", "login",
     "/regMac", "regMac",
@@ -26,7 +27,9 @@ urls = (
     "/GetStudentList","GetStudentList",
     "/GetStudentListWP","GetStudentListWP",
     "/AddStudent","AddStudent",
-    "/removeStudent","removeStudent"
+    "/removeStudent","removeStudent",
+    "/editStudent","editStudent",
+    "/AddParent","AddParent"
 )
 app= web.application(urls,globals())
 render = web.template.render('templates/')
@@ -45,6 +48,10 @@ class login:
         session.UserName=username
         session.userType=utype
         raise web.seeother('/index')
+class debug:
+    def GET(self):
+        
+        return ""
 class index:
     def GET(self):
         if session.login==False:
@@ -150,10 +157,29 @@ class AddStudent:
         Teacher=session.UserName
         controller.addStudent(UserName,Password,StudentName,Teacher)
         return "success"
+class AddParent:
+    def POST(self):
+        UserName=web.input()["UserName"]
+        ParentName=web.input()["ParentName"]
+        StudentUName=web.input()["StudentUName"]
+        Email=web.input()["Email"]
+        Password=web.input()["Password"]
+        Teacher=session.UserName
+        db=controller.getDB()
+        db.addParent(UserName,Password,ParentName,Email,Teacher)
+        db.setParent(StudentUName,UserName)
+        return "success"
 class removeStudent:
     def POST(self):
         UserName=web.input()["UserName"]
         controller.removeStudent(UserName)
+        return "success"
+class editStudent:
+    def POST(self):
+        UserName=web.input()["UserName"]
+        StudentName=web.input()["StudentName"]
+        db=controller.getDB()
+        db.editStudent(UserName,StudentName)
         return "success"
 class removeTeacher:
     def POST(self):

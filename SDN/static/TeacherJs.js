@@ -30,6 +30,10 @@ function addteacher()
     var TeacherName=document.getElementById("inputTName").value;
     var Email=document.getElementById("InputEmail").value;
     var Password=document.getElementById("inputPassword").value;
+    document.getElementById("inputUser").value=""
+    document.getElementById("inputTName").value=""
+    document.getElementById("InputEmail").value=""
+    document.getElementById("inputPassword").value=""
     //alert(TeacherName)
     $.ajax({
         type: "post",

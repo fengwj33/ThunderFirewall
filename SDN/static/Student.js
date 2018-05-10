@@ -27,6 +27,9 @@ function addstudent()
     var UserName=document.getElementById("inputUser").value;
     var StudentName=document.getElementById("inputSName").value;
     var Password=document.getElementById("inputPassword").value;
+    document.getElementById("inputUser").value=""
+    document.getElementById("inputSName").value=""
+    document.getElementById("inputPassword").value=""
     //alert(TeacherName)
     $.ajax({
         type: "post",

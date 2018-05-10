@@ -10,7 +10,7 @@
                 },
                 {
                     "title":"编辑学生及添加家长",
-                    "url":"/static/StuInfo_sd.html",
+                    "url":"/static/EditStudent.html",
                     "count":"0"
                 },
                 {
