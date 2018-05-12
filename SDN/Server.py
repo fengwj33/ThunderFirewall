@@ -18,7 +18,7 @@ urls = (
     "/ADTeacher","ADTeacher",
     "/ETeacher","ETeacher",
     "/ADStudent","ADStudent",
-
+    "/EStudent","EStudent",
 
     "/GetTeacherList","GetTeacherList",
     "/AddTeacher","AddTeacher",
@@ -93,6 +93,11 @@ class ADStudent:
 class ETeacher:
     def GET(self):
         return render.ETeacher()
+    def POST(self):
+        return ""
+class EStudent:
+    def GET(self):
+        return render.EditStudent()
     def POST(self):
         return ""
 class GetTeacherList:

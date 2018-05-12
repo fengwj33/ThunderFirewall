@@ -10,7 +10,7 @@
                 },
                 {
                     "title":"编辑学生及添加家长",
-                    "url":"/static/EditStudent.html",
+                    "url":"/EStudent",
                     "count":"0"
                 },
                 {
