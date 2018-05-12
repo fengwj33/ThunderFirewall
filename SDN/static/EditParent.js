@@ -2,7 +2,7 @@ function getlist()
 {
     
     $.ajax({
-        url: "/GetTeacherList",
+        url: "/GetParentList",
         type: "GET",
         dataType: "json",
         success: function(data) {
@@ -45,14 +45,14 @@ function SubmitEdit()
     var inpEmail=document.getElementById("InputEmail");
     var inpName=document.getElementById("inputName");
     var UserName=inpUName.value;
-    var TeacherName=inpName.value;
+    var ParentName=inpName.value;
     var Email=inpEmail.value;
     $.ajax({
         type: "post",
-        url: "/editTeacher",
+        url: "/editParent",
         data: {
             "UserName": UserName,
-            "TeacherName": TeacherName,
+            "ParentName": ParentName,
             "Email": Email,
         },
         dataType: 'text',

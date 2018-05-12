@@ -85,7 +85,9 @@ class DataBase():
     def editTeacher(self,userName,TeacherName,Email):
         sql="UPDATE GreenBar.Teacher SET TeacherName='%s',EmailAddr='%s' WHERE UserName='%s';" % (TeacherName,Email,userName)
         self.UPDATE(sql)
-
+    def editParent(self,userName,ParentName,Email):
+        sql="UPDATE GreenBar.Parent SET ParentName='%s',EmailAddr='%s' WHERE UserName='%s';" % (ParentName,Email,userName)
+        self.UPDATE(sql)
 
     def getStudent(self,StuName):
         sql="SELECT UserName FROM GreenBar.Student WHERE Stu_Name='%s';" % StuName
@@ -120,7 +122,11 @@ class DataBase():
         sql="SELECT TeacherID,UserName,TeacherName,EmailAddr FROM GreenBar.Teacher"
         data=self.SELECT(sql)
         return data
-    
+    def getParentList(self,teacherUName):
+        sql="SELECT ParentID,UserName,ParentName,EmailAddr FROM GreenBar.Parent WHERE Teacher='%s';" % teacherUName
+        data=self.SELECT(sql)
+        return data
+
     def setTeacher(self,uName_Stu,uName_Tea):
         sql="UPDATE GreenBar.Student SET TeacherUName='%s'  WHERE UserName='%s';" % (uName_Tea,uName_Stu)
         self.UPDATE(sql)

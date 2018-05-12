@@ -19,6 +19,7 @@ urls = (
     "/ETeacher","ETeacher",
     "/ADStudent","ADStudent",
     "/EStudent","EStudent",
+    "/EParent","EParent",
 
     "/GetTeacherList","GetTeacherList",
     "/AddTeacher","AddTeacher",
@@ -29,7 +30,9 @@ urls = (
     "/AddStudent","AddStudent",
     "/removeStudent","removeStudent",
     "/editStudent","editStudent",
-    "/AddParent","AddParent"
+    "/AddParent","AddParent",
+    "/GetParentList","GetParentList",
+    "/editParent","editParent",
 )
 app= web.application(urls,globals())
 render = web.template.render('templates/')
@@ -100,6 +103,11 @@ class EStudent:
         return render.EditStudent()
     def POST(self):
         return ""
+class EParent:
+    def GET(self):
+        return render.EditParent()
+    def POST(self):
+        return ""
 class GetTeacherList:
     def GET(self):
         db=controller.getDB()
@@ -114,7 +122,21 @@ class GetTeacherList:
         retval["body"]=list
         retjson=json.dumps(retval)
         return retjson
-
+class GetParentList:
+    def GET(self):
+        db=controller.getDB()
+        Teacher=session.UserName
+        data=db.getParentList(Teacher)
+        retval={}
+        list=[]
+        for r in data:
+            temp=[]
+            for c in r:
+                temp.append(c)
+            list.append(temp)
+        retval["body"]=list
+        retjson=json.dumps(retval)
+        return retjson
 class AddTeacher:
     def POST(self):
         UserName=web.input()["UserName"]
@@ -199,6 +221,14 @@ class editTeacher:
         Email=web.input()["Email"]
         db=controller.getDB()
         db.editTeacher(UserName,TeacherName,Email)
+        return "success"
+class editParent:
+    def POST(self):
+        UserName=web.input()["UserName"]
+        TeacherName=web.input()["ParentName"]
+        Email=web.input()["Email"]
+        db=controller.getDB()
+        db.editParent(UserName,TeacherName,Email)
         return "success"
 if __name__== "__main__":
     app.run()

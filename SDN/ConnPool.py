@@ -8,13 +8,13 @@ class ConnPool():
         print("Creating Connection Pool...")
         self.pt=0
         for i in range(0,1):
-            cn=pymysql.connect("45.78.37.244","root","fengwj33","GreenBar" )
+            cn=pymysql.connect("192.168.56.1","root","AbCd1234","GreenBar" )
             self.free.append(cn)
         print("Creating Connection Pool...finish")
     def getConn(self):
         #self.mutex.acquire()
         if self.pt==-1:
-            cn=pymysql.connect("45.78.37.244","root","fengwj33","GreenBar" )
+            cn=pymysql.connect("192.168.56.1","root","AbCd1234","GreenBar" )
             return cn
         retval=self.free[self.pt]
         self.free.remove(retval)
