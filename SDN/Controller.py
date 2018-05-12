@@ -197,7 +197,7 @@ class MSwitch(app_manager.RyuApp):
         self.monitor_thread = hub.spawn(self._monitor)
         self.userList={}
         self.WAN=1
-        self.cookie=0
+        self.cookie=2
 
         self.p2Flows=[]
 
@@ -225,6 +225,18 @@ class MSwitch(app_manager.RyuApp):
         for user in self.userList:
             uc=self.userList[user]
             uc.updateFlowsList()
+        for i in range(len(self.p2Flows)-1,-1,-1):
+            flow=self.p2Flows[i]
+            if flow[0] in self.checkTable:
+                flow[1].remove()
+                log("p2Flow:"+str(flow[1].cookie)+"=>"+flow[1].mac+"-"+flow[1].ipaddr+"\t\tremoved")
+                self.p2Flows.remove(flow)
+        for d in self.datapaths:
+            datapath=self.datapaths[d]
+            self.delete_flow(self.datapaths[d],1)
+            self.mac_to_port[datapath.id]={}
+
+            
 
     def updateUserMac(self,username,Mac):
         u=self.userList[username]
@@ -489,7 +501,7 @@ class MSwitch(app_manager.RyuApp):
         actions = [parser.OFPActionOutput(out_port)]
         if out_port != ofproto.OFPP_FLOOD:
             match = parser.OFPMatch(in_port=in_port, eth_dst=dst)
-            self.add_flow(datapath, 1, match, actions)
+            self.add_flow(datapath, 1, match, actions,1)
         data = None
         if msg.buffer_id == ofproto.OFP_NO_BUFFER:
             data = msg.data

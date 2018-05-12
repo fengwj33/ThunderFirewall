@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">  
+	<script src="jQuery/jquery-3.2.1.js"></script>
+   	<script src="bootstrap/js/bootstrap.min.js"></script>
+    <title>联网控制管理系统</title>
+    <script src="Rules.js"></script>
+</head>
+<body id="fbody" style="padding:3px;background-color:#F6F4F0;height:100%">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <div class="row ">   
+                    <table class="table table-hover table-condensed table-bordered">
+                        <thead>
+                            <tr>
+                                <th>
+                                    规则描述
+                                </th>
+                                <th>
+                                    ip地址
+                                </th>
+                                <th>
+                                    更改
+                                </th>
+                                <th>
+                                    删除
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="Tlist">
+                            
+                            
+                        </tbody>
+                        
+                    </table>
+                </div>
+
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    &times;
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">
+                                    编辑规则
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-horizontal" role="form">
+                                    <div class="form-group">
+                                        <label for="inputUser" class="col-sm-2 control-label">规则名：</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="einputRuleName"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputUser" class="col-sm-2 control-label">ip地址：</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="einputIp" name="userName" />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                </button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="confirmedition()">
+                                提交更改
+                                </button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal -->
+                </div>
+                <div class="panel panel-info">
+                    <div class="panel-body">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label for="inputUser" class="col-sm-2 control-label">规则名：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="inputRuleName" name="userName" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputUser" class="col-sm-2 control-label">ip地址：</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="inputIp" name="userName" />
+                                    </div>
+                                </div>
+                                <div class="row clearfix" style="padding-bottom:10px">
+
+                                    <div class="col-md-offset-4 col-md-4 column">
+                                            <button type="button" class="btn btn-default btn-block btn-info" onclick="add()">提交</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="panel-footer">
+                                <div class="row clearfix">
+                                    <div class="col-md-3 column">
+                                    </div>
+                                    <div class="col-md-2 column">
+                                         <button type="button" class="btn btn-default btn-success btn-block" onclick="SubmitEdit()">保存更改</button>
+                                    </div>
+                                    <div class="col-md-2 column">
+                                    </div>
+                                    <div class="col-md-2 column">
+                                         <button type="button" class="btn btn-default btn-danger btn-block" onclick="getlist()">还原更改</button>
+                                    </div>
+                                    <div class="col-md-3 column">
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+
+                </div>
+                
+            </div>
+        </div>
+    </div>
+	<script>getlist()</script>
+	
+</body>
+</html>
+ 

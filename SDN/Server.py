@@ -33,6 +33,8 @@ urls = (
     "/AddParent","AddParent",
     "/GetParentList","GetParentList",
     "/editParent","editParent",
+    "/GetGameServerList","GetGameServerList",
+    "/SetGameServerList","SetGameServerList"
 )
 app= web.application(urls,globals())
 render = web.template.render('templates/')
@@ -122,6 +124,25 @@ class GetTeacherList:
         retval["body"]=list
         retjson=json.dumps(retval)
         return retjson
+class GetGameServerList:
+    def GET(self):
+        db=controller.getDB()
+        data=db.getGameServer()
+        retval={}
+        list=[]
+        for r in data:
+            temp=[]
+            for c in r:
+                temp.append(c)
+            list.append(temp)
+        retval["body"]=list
+        retjson=json.dumps(retval)
+        return retjson
+class SetGameServerList:
+    def POST(self):
+        iplist=json.loads(web.input()["iplist"])
+        controller.setGameServer(iplist["body"])
+        return "success"
 class GetParentList:
     def GET(self):
         db=controller.getDB()
