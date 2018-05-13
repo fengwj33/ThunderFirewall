@@ -342,7 +342,7 @@ class MSwitch(app_manager.RyuApp):
             retval="update Success"
         elif scmd[0]=="getflow":
             byte=str(self.userList[scmd[1]].getFlow())
-            retval=scmd[1]+":"+byte
+            retval=byte
         elif scmd[0]=="lock":
             self.userList[scmd[1]].lockAll()
             retval=scmd[1]+":"+"locked"

@@ -27,7 +27,7 @@
                 },
                 {
                     "title":"编辑联网规则",
-                    "url":"/static/StuInfo_pl.html",
+                    "url":"/EditRules",
                     "count":"0"
                 }
 

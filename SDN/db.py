@@ -157,11 +157,19 @@ class DataBase():
         for gs in list:
             sql = "INSERT INTO GreenBar.Block(BlockName,IPAddr) VALUES ('%s', '%s');" % (gs[0],gs[1])
             self.UPDATE(sql)
+    def clearLog(self):
+        sql="truncate table GreenBar.OnlineLog;"
+        self.UPDATE(sql)
+    def insertLog(self,StuName,time,Byte):
+        sql = "INSERT INTO GreenBar.OnlineLog(StudentUName,Time,Byte) VALUES ('%s', '%s', %d);" % (StuName,time,Byte)
 
-    '''def insertLog(StuName,timeID,time,Byte):
-        sql = "INSERT INTO GreenBar.OnlineLog(StudentUName,Time,TimeID,Byte) VALUES ('%s', '%s', %d,%d);" % (gs[0],gs[1])'''
+        self.UPDATE(sql)
     def getLog(self,StuName):
         sql="SELECT TimeID,Time,Byte FROM GreenBar.OnlineLog WHERE StudentUName='%s';" % StuName
+        data=self.SELECT(sql)
+        return data
+    def getCfg(self):
+        sql="SELECT OnlineTime,BlockTime FROM GreenBar.configuration;"
         data=self.SELECT(sql)
         return data
     def SELECT(self,query):
