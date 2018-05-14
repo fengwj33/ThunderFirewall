@@ -114,7 +114,7 @@ class MainController():
 
         self.onlineTime=int(cfg[0][0])
         self.sleepTime=int(cfg[0][1])
-        self.db.clearLog()
+        #self.db.clearLog()
         self.logcycle=2
         self.logtimer=self.logcycle
         self.usertimer={}
@@ -242,7 +242,7 @@ class MainController():
     def run(self):
 
         threading.Thread(target=MainController.connectCtrl,args=(self,)).start()
-        threading.Thread(target=MainController.logThread,args=(self,)).start()
+        #threading.Thread(target=MainController.logThread,args=(self,)).start()
 
 #controller=MainController()
 #controller.run()

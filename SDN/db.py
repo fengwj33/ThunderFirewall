@@ -165,7 +165,7 @@ class DataBase():
 
         self.UPDATE(sql)
     def getLog(self,StuName):
-        sql="SELECT TimeID,Time,Byte FROM GreenBar.OnlineLog WHERE StudentUName='%s';" % StuName
+        sql="SELECT Time,Byte FROM GreenBar.OnlineLog WHERE StudentUName='%s' limit 10;" % StuName
         data=self.SELECT(sql)
         return data
     def getCfg(self):

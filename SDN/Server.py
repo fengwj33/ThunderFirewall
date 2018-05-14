@@ -35,7 +35,8 @@ urls = (
     "/GetParentList","GetParentList",
     "/editParent","editParent",
     "/GetGameServerList","GetGameServerList",
-    "/SetGameServerList","SetGameServerList"
+    "/SetGameServerList","SetGameServerList",
+    "/getLog","getLog"
 )
 app= web.application(urls,globals())
 render = web.template.render('templates/')
@@ -58,6 +59,24 @@ class debug:
     def GET(self):
         
         return ""
+class getLog:
+    def GET(self):
+        username=web.input()["userName"]
+        db=controller.getDB()
+
+        logs=db.getLog(username)
+        x=[i for i in range(30)]
+        retval={"x":[],"time":[],"value":[]}
+        retval["x"]=x
+        retval["name"]=db.getStudentName(username)
+        l=len(logs)
+        if l<30:
+            retval["value"]=[0 for id in range(30-l)]
+            retval["time"]=["NULL" for id in range(30-l)]
+        for log in logs:
+            retval["value"].append(log[1])
+            retval["time"].append(log[0])
+        return json.dumps(retval)
 class index:
     def GET(self):
         if session.login==False:
