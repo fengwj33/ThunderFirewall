@@ -1,14 +1,14 @@
-function getLog()
+function getLog(pid,sname)
 {
     $.ajax({
         url: "/getLog",
         type: "GET",
         data: {
-            "userName":"S2"
+            "userName":sname
         },
         dataType: "json",
         success: function(data) {
-            display("main",data.x,data.time,data.value,data.name)
+            display(pid,data.x,data.time,data.value,data.name)
 
             
 

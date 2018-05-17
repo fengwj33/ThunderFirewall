@@ -21,6 +21,7 @@ urls = (
     "/EStudent","EStudent",
     "/EParent","EParent",
     "/EditRules","EditRules",
+    "/StudentLog","StudentLog",
 
     "/GetTeacherList","GetTeacherList",
     "/AddTeacher","AddTeacher",
@@ -133,6 +134,11 @@ class EParent:
 class EditRules:
     def GET(self):
         return render.AccessRules()
+    def POST(self):
+        return ""
+class StudentLog:
+    def GET(self):
+        return render.StudentLog()
     def POST(self):
         return ""
 class GetTeacherList:
