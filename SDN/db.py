@@ -70,6 +70,12 @@ class DataBase():
         data=self.SELECT(sql)
         return data[0][0]
 
+    def getParentStu(self,parentUserName):
+        sql="SELECT UserName FROM GreenBar.Student WHERE ParentUName='%s';" % (parentUserName)
+        print(sql)
+        data=self.SELECT(sql)
+        return data[0][0]
+
     def removeParent(self,userName):
         self.removeUser(userName)
         sql = "DELETE FROM GreenBar.Parent WHERE UserName='%s';" % userName

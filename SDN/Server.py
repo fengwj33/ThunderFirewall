@@ -22,6 +22,7 @@ urls = (
     "/EParent","EParent",
     "/EditRules","EditRules",
     "/StudentLog","StudentLog",
+    "/pStudentLog","pStudentLog",
 
     "/GetTeacherList","GetTeacherList",
     "/AddTeacher","AddTeacher",
@@ -37,7 +38,9 @@ urls = (
     "/editParent","editParent",
     "/GetGameServerList","GetGameServerList",
     "/SetGameServerList","SetGameServerList",
-    "/getLog","getLog"
+    "/getLog","getLog",
+    "/pgetLog","pgetLog"
+
 )
 app= web.application(urls,globals())
 render = web.template.render('templates/')
@@ -78,6 +81,28 @@ class getLog:
             retval["value"].append(log[1])
             retval["time"].append(log[0])
         return json.dumps(retval)
+
+class pgetLog:
+    def GET(self):
+        pusername=session.UserName
+        
+        db=controller.getDB()
+        username=db.getParentStu(pusername)
+        logs=db.getLog(username)
+        x=[i for i in range(30)]
+        retval={"x":[],"time":[],"value":[]}
+        retval["x"]=x
+        retval["name"]=db.getStudentName(username)
+        l=len(logs)
+        if l<30:
+            retval["value"]=[0 for id in range(30-l)]
+            retval["time"]=["NULL" for id in range(30-l)]
+        for log in logs:
+            retval["value"].append(log[1])
+            retval["time"].append(log[0])
+        return json.dumps(retval)
+
+
 class index:
     def GET(self):
         if session.login==False:
@@ -139,6 +164,11 @@ class EditRules:
 class StudentLog:
     def GET(self):
         return render.StudentLog()
+    def POST(self):
+        return ""
+class pStudentLog:
+    def GET(self):
+        return render.pLog()
     def POST(self):
         return ""
 class GetTeacherList:

@@ -4,13 +4,8 @@
             "title":"学生管理监控",
             "content":[
                 {
-                    "title":"查看学生联网状态",
-                    "url":"/static/StuInfo_pl.html",
-                    "count":"0"
-                },
-                {
-                    "title":"查看流量折线图",
-                    "url":"/static/StuInfo_pl.html",
+                    "title":"查看学生流量折线图",
+                    "url":"/pStudentLog",
                     "count":"0"
                 }
 
