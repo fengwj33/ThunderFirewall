@@ -20,7 +20,10 @@ UINT32_MAX = 0xffffffff
 UINT64_MAX = 0xffffffffffffffff
 
 logEnable=True
+sstatuslogs=""
 def log(str):
+    global sstatuslogs
+    sstatuslogs=sstatuslogs+"\n"+str
     global logEnable
     if logEnable:
         print(str)
@@ -326,6 +329,7 @@ class MSwitch(app_manager.RyuApp):
         
 
     def exeCmd(self,cmd):
+        
         retval=""
         scmd=cmd.split(' ')
         if scmd[0]=="addUser":
@@ -349,6 +353,8 @@ class MSwitch(app_manager.RyuApp):
         elif scmd[0]=="unlock":
             self.userList[scmd[1]].unlockAll()
             retval=scmd[1]+":"+"unlocked"
+        elif scmd[0]=="getLog":
+            retval=sstatuslogs
         else:
             retval="command="+cmd
         

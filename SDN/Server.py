@@ -23,6 +23,10 @@ urls = (
     "/EditRules","EditRules",
     "/StudentLog","StudentLog",
     "/pStudentLog","pStudentLog",
+    "/sStudentLog","sStudentLog",
+    "/SwitchLog","SwitchLog",
+    "/logout","logout",
+    "/setnewPassword","setnewPassword",
 
     "/GetTeacherList","GetTeacherList",
     "/AddTeacher","AddTeacher",
@@ -39,7 +43,10 @@ urls = (
     "/GetGameServerList","GetGameServerList",
     "/SetGameServerList","SetGameServerList",
     "/getLog","getLog",
-    "/pgetLog","pgetLog"
+    "/pgetLog","pgetLog",
+    "/sgetLog","sgetLog",
+    "/getSwitchLog","getSwitchLog",
+    "/setPassword","setPassword"
 
 )
 app= web.application(urls,globals())
@@ -47,6 +54,8 @@ render = web.template.render('templates/')
 session = web.session.Session(app, web.session.DiskStore('sessions'), initializer={'login': False,'UserName':"",'userType':-1})
 class login:
     def GET(self):
+        if session.login==True:
+            raise web.seeother('/index')
         return render.login("none")
     def POST(self):
         username=web.input()["userName"]
@@ -59,6 +68,18 @@ class login:
         session.UserName=username
         session.userType=utype
         raise web.seeother('/index')
+class setPassword:
+    def POST(self):
+        oldPassword=web.input()["oldPassword"]
+        newPassword=web.input()["newPassword"]
+        username=session.UserName
+        db=controller.getDB()
+        utype=db.validateUser(username,oldPassword)
+        if utype=="-1":
+            session.login=False
+            return "Fail"
+        db.setPassword(username,newPassword)
+        return "Success"
 class debug:
     def GET(self):
         
@@ -101,8 +122,29 @@ class pgetLog:
             retval["value"].append(log[1])
             retval["time"].append(log[0])
         return json.dumps(retval)
-
-
+class sgetLog:
+    def GET(self):
+        username=session.UserName
+        db=controller.getDB()
+        logs=db.getLog(username)
+        x=[i for i in range(30)]
+        retval={"x":[],"time":[],"value":[]}
+        retval["x"]=x
+        retval["name"]=db.getStudentName(username)
+        l=len(logs)
+        if l<30:
+            retval["value"]=[0 for id in range(30-l)]
+            retval["time"]=["NULL" for id in range(30-l)]
+        for log in logs:
+            retval["value"].append(log[1])
+            retval["time"].append(log[0])
+        return json.dumps(retval)
+class getSwitchLog:
+    def GET(self):
+        logs=controller.getSwitchLog()
+        retval={}
+        retval["body"]=logs
+        return json.dumps(retval)
 class index:
     def GET(self):
         if session.login==False:
@@ -171,6 +213,27 @@ class pStudentLog:
         return render.pLog()
     def POST(self):
         return ""
+class sStudentLog:
+    def GET(self):
+        return render.sLog()
+    def POST(self):
+        return ""
+class SwitchLog:
+    def GET(self):
+        return render.getSwitchStatus()
+    def POST(self):
+        return ""
+class setnewPassword:
+    def GET(self):
+        return render.setPassword()
+    def POST(self):
+        return ""
+
+    
+class logout:
+    def GET(self):
+        session.login=False
+        raise web.seeother('/login')
 class GetTeacherList:
     def GET(self):
         db=controller.getDB()

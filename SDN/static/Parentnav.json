@@ -22,7 +22,7 @@
                 },
                 {
                     "title":"更改密码",
-                    "url":"/static/StuInfo_pl.html",
+                    "url":"/setnewPassword",
                     "count":"0"
                 },
                 {

@@ -102,6 +102,11 @@ class SDNCtrl():
         send(self.csocket,cmd.encode("utf-8"))
         retdata=self.getRcv()
         log("rcv:"+retdata)
+    def getLog(self):
+        cmd="getLog"
+        send(self.csocket,cmd.encode("utf-8"))
+        retdata=self.getRcv()
+        return retdata
 
 class MainController():
     
@@ -165,6 +170,15 @@ class MainController():
 
 
 
+    def getSwitchLog(self):
+        logs=[]
+        c=0
+        for ctl in self.sdnctrls:
+            sname="SWITCH$"+str(c)
+            log=ctl.getLog()
+            logs.append([sname,log])
+            c=c+1
+        return logs
 
 
 

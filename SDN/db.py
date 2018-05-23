@@ -12,6 +12,9 @@ class DataBase():
     def addUser(self,userName,Password,UserType):
         sql = "INSERT INTO accounts(UserName,Password,UserType) VALUES ('%s', '%s', %d);" % (userName,Password,UserType)
         self.UPDATE(sql)
+    def setPassword(self,userName,Password):
+        sql="UPDATE accounts SET Password='%s' WHERE UserName='%s';" %(Password,userName)
+        self.UPDATE(sql)
     def removeUser(self,userName):
         sql = "DELETE FROM GreenBar.accounts WHERE UserName='%s';" % userName
         self.UPDATE(sql)

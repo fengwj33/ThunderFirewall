@@ -22,7 +22,7 @@
             "content":[
                 {
                     "title":"查看交换机状态",
-                    "url":"/static/StuInfo_pl.html",
+                    "url":"/SwitchLog",
                     "count":"0"
                 },
                 {
@@ -38,23 +38,13 @@
             "title":"账户",
             "content":[
                 {
-                    "title":"账户信息",
-                    "url":"/static/StuInfo_pl.html",
-                    "count":"0"
-                },
-                {
                     "title":"更改密码",
-                    "url":"/static/StuInfo_pl.html",
-                    "count":"0"
-                },
-                {
-                    "title":"更改信息",
-                    "url":"/static/StuInfo_pl.html",
+                    "url":"/setnewPassword",
                     "count":"0"
                 },
                 {
                     "title":"登出",
-                    "url":"/static/StuInfo_pl.html",
+                    "url":"/logout",
                     "count":"0"
                 }
 
