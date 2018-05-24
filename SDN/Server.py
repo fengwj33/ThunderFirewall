@@ -27,6 +27,7 @@ urls = (
     "/SwitchLog","SwitchLog",
     "/logout","logout",
     "/setnewPassword","setnewPassword",
+    "/setnewEmail","setnewEmail",
 
     "/GetTeacherList","GetTeacherList",
     "/AddTeacher","AddTeacher",
@@ -46,7 +47,8 @@ urls = (
     "/pgetLog","pgetLog",
     "/sgetLog","sgetLog",
     "/getSwitchLog","getSwitchLog",
-    "/setPassword","setPassword"
+    "/setPassword","setPassword",
+    "/setEmail","setEmail"
 
 )
 app= web.application(urls,globals())
@@ -80,6 +82,18 @@ class setPassword:
             return "Fail"
         db.setPassword(username,newPassword)
         return "Success"
+class setEmail:
+    def POST(self):
+        EmailAddr=web.input()["EmailAddr"]
+        username=session.UserName
+        utype=session.userType
+        db=controller.getDB()
+        if utype=='2':
+            db.setTEmail(username,EmailAddr)
+        elif utype=='3':
+            db.setPEmail(username,EmailAddr)
+        return "success"
+    
 class debug:
     def GET(self):
         
@@ -226,6 +240,11 @@ class SwitchLog:
 class setnewPassword:
     def GET(self):
         return render.setPassword()
+    def POST(self):
+        return ""
+class setnewEmail:
+    def GET(self):
+        return render.setEmail()
     def POST(self):
         return ""
 

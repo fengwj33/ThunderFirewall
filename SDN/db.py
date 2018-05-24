@@ -15,6 +15,12 @@ class DataBase():
     def setPassword(self,userName,Password):
         sql="UPDATE accounts SET Password='%s' WHERE UserName='%s';" %(Password,userName)
         self.UPDATE(sql)
+    def setTEmail(self,userName,EmailAddr):
+        sql="UPDATE Teacher SET EmailAddr='%s' WHERE UserName='%s';" %(EmailAddr,userName)
+        self.UPDATE(sql)
+    def setPEmail(self,userName,EmailAddr):
+        sql="UPDATE Parent SET EmailAddr='%s' WHERE UserName='%s';" %(EmailAddr,userName)
+        self.UPDATE(sql)
     def removeUser(self,userName):
         sql = "DELETE FROM GreenBar.accounts WHERE UserName='%s';" % userName
         self.UPDATE(sql)

@@ -44,7 +44,7 @@
                 },
                 {
                     "title":"登出",
-                    "url":"/logout",
+                    "url":"/static/logout.html",
                     "count":"0"
                 }
 
