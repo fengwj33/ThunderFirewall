@@ -226,6 +226,10 @@ class MainController():
                             self.usertimer[usrname][1]=-self.sleepTime
                             for ctl in self.sdnctrls:
                                 ctl.lockUser(usrname)
+                            addr=self.db.getAddr(usrname)
+                            print("Send Email to "+addr[0])
+                            print("Send Email to "+addr[1])
+
                 else:
                     self.usertimer[usrname][1]=self.usertimer[usrname][1]+1
                     if self.usertimer[usrname][1]>self.onlineTime:
@@ -235,7 +239,6 @@ class MainController():
                         self.usertimer[usrname][2]=False
                         for ctl in self.sdnctrls:
                             ctl.unlockUser(usrname)
-            print(self.usertimer['S2'])
             if self.logtimer==0:
                 self.logtimer=self.logcycle
                 self.updatelog()
@@ -256,7 +259,7 @@ class MainController():
     def run(self):
 
         threading.Thread(target=MainController.connectCtrl,args=(self,)).start()
-        #threading.Thread(target=MainController.logThread,args=(self,)).start()
+        threading.Thread(target=MainController.logThread,args=(self,)).start()
 
 #controller=MainController()
 #controller.run()

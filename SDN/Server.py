@@ -109,12 +109,14 @@ class getLog:
         retval["x"]=x
         retval["name"]=db.getStudentName(username)
         l=len(logs)
-        if l<30:
-            retval["value"]=[0 for id in range(30-l)]
-            retval["time"]=["NULL" for id in range(30-l)]
+        retval["value"]=[]
+        retval["time"]=[]
         for log in logs:
             retval["value"].append(log[1])
             retval["time"].append(log[0])
+        if l<30:
+            retval["value"].extend([0 for id in range(30-l)])
+            retval["time"].extend(["NULL" for id in range(30-l)])
         return json.dumps(retval)
 
 class pgetLog:
@@ -129,12 +131,14 @@ class pgetLog:
         retval["x"]=x
         retval["name"]=db.getStudentName(username)
         l=len(logs)
-        if l<30:
-            retval["value"]=[0 for id in range(30-l)]
-            retval["time"]=["NULL" for id in range(30-l)]
+        retval["value"]=[]
+        retval["time"]=[]
         for log in logs:
             retval["value"].append(log[1])
             retval["time"].append(log[0])
+        if l<30:
+            retval["value"].extend([0 for id in range(30-l)])
+            retval["time"].extend(["NULL" for id in range(30-l)])
         return json.dumps(retval)
 class sgetLog:
     def GET(self):
@@ -146,12 +150,14 @@ class sgetLog:
         retval["x"]=x
         retval["name"]=db.getStudentName(username)
         l=len(logs)
-        if l<30:
-            retval["value"]=[0 for id in range(30-l)]
-            retval["time"]=["NULL" for id in range(30-l)]
+        retval["value"]=[]
+        retval["time"]=[]
         for log in logs:
             retval["value"].append(log[1])
             retval["time"].append(log[0])
+        if l<30:
+            retval["value"].extend([0 for id in range(30-l)])
+            retval["time"].extend(["NULL" for id in range(30-l)])
         return json.dumps(retval)
 class getSwitchLog:
     def GET(self):

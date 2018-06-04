@@ -75,9 +75,34 @@ class DataBase():
 
     def getStuParent(self,stuUserName):
         sql="SELECT ParentUName FROM GreenBar.Student WHERE UserName='%s';" % (stuUserName)
-        print(sql)
         data=self.SELECT(sql)
         return data[0][0]
+
+    def getStuTeacher(self,stuUserName):
+        sql="SELECT TeacherUName FROM GreenBar.Student WHERE UserName='%s';" % (stuUserName)
+        data=self.SELECT(sql)
+        return data[0][0]
+
+    def getTeacherEAddr(self,UserName):
+        sql="SELECT EmailAddr FROM GreenBar.Teacher WHERE UserName='%s';" % (UserName)
+        data=self.SELECT(sql)
+        return data[0][0]
+    def getParentEAddr(self,UserName):
+        sql="SELECT EmailAddr FROM GreenBar.Parent WHERE UserName='%s';" % (UserName)
+        data=self.SELECT(sql)
+        return data[0][0]
+    def getAddr(self,UserName):
+        ParentUName=self.getStuParent(UserName)
+        TeacherUName=self.getStuTeacher(UserName)
+        if TeacherUName != "None":
+            Addr1=self.getTeacherEAddr(TeacherUName)
+        else:
+            Addr1="None"
+        if ParentUName != "None":
+            Addr2=self.getParentEAddr(ParentUName)
+        else:
+            Addr2="None"
+        return [Addr1,Addr2]
 
     def getParentStu(self,parentUserName):
         sql="SELECT UserName FROM GreenBar.Student WHERE ParentUName='%s';" % (parentUserName)
@@ -180,7 +205,7 @@ class DataBase():
 
         self.UPDATE(sql)
     def getLog(self,StuName):
-        sql="SELECT Time,Byte FROM GreenBar.OnlineLog WHERE StudentUName='%s' limit 10;" % StuName
+        sql="SELECT Time,Byte FROM GreenBar.OnlineLog WHERE StudentUName='%s' order by idOnlineLog DESC limit 30;" % StuName
         data=self.SELECT(sql)
         return data
     def getCfg(self):
