@@ -19,5 +19,3 @@
 ### 流量曲线查看界面：
 ![avatar](http://45.78.37.244/static/Proj8_04.png)
 
-### 以下是一个演示视频：
-<iframe width="560" height="315" src="http://45.78.37.244:8080/static/GreenBarDemo.mp4" frameborder="0" allowfullscreen></iframe>
