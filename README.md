@@ -8,13 +8,13 @@
 上层使用webpy作为web服务器，一方面与总控制器进行交互获取数据，另一方面提供丰富的api接口供前端页面调用。
 前端页面使用了bootstrap框架，与后端通信使用了ajax交互json来进行。
 下面为整体的架构图：
-![avatar](http://45.78.37.244/static/Proj8_01.png)
+![avatar](http://45.78.37.214:8080/static/Proj8_01.png)
 
 ### 用户编辑界面：
-![avatar](http://45.78.37.244/static/Proj8_02.png)
+![avatar](http://45.78.37.214:8080/static/Proj8_02.png)
 
 ### 联网规则编辑界面：
-![avatar](http://45.78.37.244/static/Proj8_03.png)
+![avatar](http://45.78.37.214:8080/static/Proj8_03.png)
 
 ### 流量曲线查看界面：
-![avatar](http://45.78.37.244/static/Proj8_04.png)
+![avatar](http://45.78.37.214:8080/static/Proj8_04.png)
