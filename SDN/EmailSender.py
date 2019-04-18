@@ -4,7 +4,7 @@ import smtplib
 from email.mime.text import MIMEText
 def sendEmail(subject,content,msg_to):
     msg_from='1750956766@qq.com' 
-    passwd='kawurhdrdozgbdhg'                            
+    passwd='××××××××××××××'                            
     msg = MIMEText(content)
     msg['Subject'] = subject
     msg['From'] = msg_from
