@@ -11,6 +11,7 @@
 ![1.png](https://i.loli.net/2021/06/14/68YrqKGQDfadJoi.png)
 ## 视频演示
 http://47.102.99.174:8080/static/GreenBarDemo.mp4
+<!--
 ### 用户编辑界面：
 ![avatar](http://45.78.37.214/static/Proj8_02.png)
 
