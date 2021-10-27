@@ -17,6 +17,7 @@ http://47.102.99.174:8080/static/GreenBarDemo.mp4
 
 ### 联网规则编辑界面：
 ![avatar](http://45.78.37.214/static/Proj8_03.png)
--->
+
 ### 流量曲线查看界面：
 ![2.png](https://i.loli.net/2021/06/14/KfI3b9arCHeAJi2.png)
+-->
